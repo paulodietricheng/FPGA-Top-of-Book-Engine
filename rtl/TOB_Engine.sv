@@ -151,7 +151,7 @@ module TOB_Engine #(
 
     // Arbiter
 
-    Arbiter_PIP #(.N(N)) U_ARB_BID (
+    Arbiter #(.N(N)) U_ARB_BID (
         .clk(clk),
         .rst_n(rst_n),
         .in_quote(bid_quote_scored),
@@ -159,7 +159,7 @@ module TOB_Engine #(
         .winner_quote(bid_winner_quote)
     );
 
-    Arbiter_PIP #(.N(N)) U_ARB_ASK (
+    Arbiter #(.N(N)) U_ARB_ASK (
         .clk(clk),
         .rst_n(rst_n),
         .in_quote(ask_quote_scored),
