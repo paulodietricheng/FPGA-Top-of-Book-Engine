@@ -3,10 +3,7 @@ import Data_Structures::*;
 
 module Top_of_Book_Engine_tb;
 
-    // ============================================================
     // PARAMETERS
-    // ============================================================
-
     localparam int N = 8;
     localparam int RAW_DATA_W = 98;
     localparam int PRICE_W = 32;
@@ -18,10 +15,7 @@ module Top_of_Book_Engine_tb;
 
     localparam int PIPELINE_LATENCY = 20; // Safe margin
 
-    // ============================================================
     // SIGNALS
-    // ============================================================
-
     logic clk;
     logic rst_n;
     logic [RAW_DATA_W-1:0] in_data [N-1:0];
@@ -30,10 +24,7 @@ module Top_of_Book_Engine_tb;
     logic [PRICE_W-1:0] out_spread, out_mid;
     logic out_cross;
 
-    // ============================================================
     // DUT
-    // ============================================================
-
     TOB_Engine #(.N(N)) DUT (
         .clk(clk),
         .rst_n(rst_n),
@@ -45,16 +36,10 @@ module Top_of_Book_Engine_tb;
         .out_cross(out_cross)
     );
 
-    // ============================================================
     // CLOCK
-    // ============================================================
-
     always #5 clk = ~clk;
 
-    // ============================================================
     // PACK RAW DATA
-    // ============================================================
-
     function automatic logic [RAW_DATA_W-1:0] pack_quote(
         input logic valid,
         input logic side,
@@ -74,10 +59,7 @@ module Top_of_Book_Engine_tb;
         return tmp;
     endfunction
 
-    // ============================================================
     // RESET
-    // ============================================================
-
     task reset_dut();
         rst_n = 0;
         repeat (5) @(posedge clk);
@@ -89,17 +71,14 @@ module Top_of_Book_Engine_tb;
             in_data[i] = '0;
     endtask
 
-    // ============================================================
     // REFERENCE MODEL
-    // ============================================================
-
     function automatic quote_t select_best_bid(quote_t quotes[N]);
     quote_t best;
     best = '0;
 
         for (int i = 0; i < N; i++) begin
             if (!quotes[i].valid) continue;
-            if (quotes[i].side != BID) continue;   // <<< ADD THIS
+            if (quotes[i].side != BID) continue; 
     
             if (!best.valid)
                 best = quotes[i];
@@ -140,10 +119,7 @@ module Top_of_Book_Engine_tb;
         return best;
     endfunction
 
-    // ============================================================
     // CHECK TASK
-    // ============================================================
-
     task automatic check_results(
         input quote_t exp_bid,
         input quote_t exp_ask
@@ -193,20 +169,14 @@ module Top_of_Book_Engine_tb;
         $display("Measured latency = %0d cycles", latency);
     endtask
 
-    // ============================================================
     // MAIN TEST
-    // ============================================================
-
     initial begin
     quote_t model_quotes [0:N-1];
         clk = 0;
         clear_inputs();
         reset_dut();
 
-        // ============================
         // TEST 1: Basic Selection
-        // ============================
-
         model_quotes = '{default:'0};
 
         model_quotes[0] = '{valid:1, side:BID, price:100, timestamp:10, size:1, lane_id:0};
@@ -232,10 +202,7 @@ module Top_of_Book_Engine_tb;
             select_best_ask(model_quotes)
         );
 
-        // ============================
         // TEST 2: Cross
-        // ============================
-
         reset_dut();
         clear_inputs();
         model_quotes = '{default:'0};
@@ -261,10 +228,7 @@ module Top_of_Book_Engine_tb;
             select_best_ask(model_quotes)
         );
 
-        // ============================
         // TEST 3: Timestamp Tie
-        // ============================
-
         reset_dut();
         clear_inputs();
         model_quotes = '{default:'0};
@@ -292,9 +256,7 @@ module Top_of_Book_Engine_tb;
             select_best_ask(model_quotes)
         );
 
-        $display("=====================================");
         $display("ALL TESTS PASSED SUCCESSFULLY");
-        $display("=====================================");
 
         $finish;
     end
