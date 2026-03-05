@@ -23,13 +23,14 @@ import Data_Structures::*;
 
 module Arbiter#(
     parameter int N = 8
-)(
-    input  logic clk,
-    input  logic rst_n,
-    input  quote_t in_quote [N-1:0],
-    input  score_t in_score [N-1:0],
-    output quote_t winner_quote
-);
+    )(
+        input logic clk, rst_n, // Signals
+        // Upstream
+        input quote_t in_quote [N-1:0],
+        input score_t in_score [N-1:0],
+        // Downstream
+        output quote_t winner_quote
+    );
 
     localparam STAGES = $clog2(N);
 
@@ -59,6 +60,7 @@ module Arbiter#(
         assign s[0][i] = s_reg[i];
     end
 
+    // Generate tree
     generate
         for (genvar k = 0; k < STAGES; k++) begin : GEN_TREE
             for (genvar i = 0; i < (N >> k); i += 2) begin : GEN_NODE
