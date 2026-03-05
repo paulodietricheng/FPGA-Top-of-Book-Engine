@@ -31,10 +31,10 @@ module TOB_Engine #(
     parameter int BID = 1,
     parameter int ASK = 0
     )(
-        input  logic clk, rst_n, // Signals
+        input logic clk, rst_n, // Signals
         
         // Upstream
-        input  logic [RAW_DATA_W-1:0] in_data [N-1:0],
+        input logic [RAW_DATA_W-1:0] in_data [N-1:0],
         
         // Outputs
         output quote_t best_bid,
@@ -123,8 +123,8 @@ module TOB_Engine #(
                 .clk(clk),
                 .rst_n(rst_n),
                 .in_quote(filtered[i]),
-                .ask_out_quote(ask_quote[i]),
-                .bid_out_quote(bid_quote[i]),
+//                .ask_out_quote(ask_quote[i]),
+//                .bid_out_quote(bid_quote[i]),
                 .ask_out_quote_c(ask_quote_c[i]),
                 .bid_out_quote_c(bid_quote_c[i])
             );
@@ -132,43 +132,41 @@ module TOB_Engine #(
             Scoring U_SCORE_BID (
                 .clk(clk),
                 .rst_n(rst_n),
-                .in_quote(bid_quote[i]),
+//                .in_quote(bid_quote[i]),
                 .in_quote_c(bid_quote_c[i]),
-                .out_score(bid_score[i]),
-                .out_quote(bid_quote_scored[i])
+                .out_score(bid_score[i])
+//                .out_quote(bid_quote_scored[i])
             );
 
             Scoring U_SCORE_ASK (
                 .clk(clk),
                 .rst_n(rst_n),
-                .in_quote(ask_quote[i]),
+//                .in_quote(ask_quote[i]),
                 .in_quote_c(ask_quote_c[i]),
-                .out_score(ask_score[i]),
-                .out_quote(ask_quote_scored[i])
+                .out_score(ask_score[i])
+//                .out_quote(ask_quote_scored[i])
             );
         end
     endgenerate
 
     // Arbiter
-
-    Arbiter_PIP #(.N(N)) U_ARB_BID (
+    Arbiter_PIP #(.N(N), .SIDE(BID)) U_ARB_BID (
         .clk(clk),
         .rst_n(rst_n),
-        .in_quote(bid_quote_scored),
+//        .in_quote(bid_quote_scored),
         .in_score(bid_score),
         .winner_quote(bid_winner_quote)
     );
 
-    Arbiter_PIP #(.N(N)) U_ARB_ASK (
+    Arbiter_PIP #(.N(N), .SIDE(ASK)) U_ARB_ASK (
         .clk(clk),
         .rst_n(rst_n),
-        .in_quote(ask_quote_scored),
+//        .in_quote(ask_quote_scored),
         .in_score(ask_score),
         .winner_quote(ask_winner_quote)
     );    
     
-    // Signal generator
-    
+    // Signal generator  
     Signal_Generation #(.PRICE_W(PRICE_W)) U_SG (
         .clk(clk),
         .rst_n(rst_n),

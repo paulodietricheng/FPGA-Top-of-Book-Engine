@@ -27,15 +27,18 @@ module Signal_Generation #(parameter PRICE_W = 32)(
     input quote_t in_BID, in_ASK,
     // Downstream
     output logic cross_true,
-    output logic [PRICE_W-1:0] spread, midpoint,
+    output logic [PRICE_W:0] spread,
+    output logic [PRICE_W-1:0]midpoint,
     output quote_t out_BID, out_ASK
     );
     
     // Intermediate varialbles
-    logic [PRICE_W-1:0] reg_spread;
+    logic signed [PRICE_W:0] comb_spread, reg_spread;
     logic [PRICE_W:0] reg_mid;
     logic reg_cross;
     quote_t reg_BID, reg_ASK;
+    
+    assign comb_spread = $signed({0, in_ASK.price}) - $signed({0, in_BID.price});
     
     // Calculations
     always_ff @(posedge clk or negedge rst_n) begin
@@ -47,15 +50,11 @@ module Signal_Generation #(parameter PRICE_W = 32)(
             reg_ASK <= '0;
         end 
         else if (in_BID.valid && in_ASK.valid) begin
-            
-            // Cross / Lock detection
-            reg_cross <= (in_BID.price >= in_ASK.price);
-    
             // Spread (unsigned, clamped to zero if crossed)
-            if (in_ASK.price > in_BID.price)
-                reg_spread <= in_ASK.price - in_BID.price;
-            else
-                reg_spread <= '0;
+            reg_spread <= comb_spread;
+  
+            // Cross / Lock detection
+            reg_cross <= (comb_spread[PRICE_W]);
     
             // Midpoint
             reg_mid <= (in_BID.price + in_ASK.price) >> 1;

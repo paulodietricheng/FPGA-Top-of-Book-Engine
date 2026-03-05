@@ -36,6 +36,7 @@ package Data_Structures;
         logic [31:0] price;
         logic [31:0] timestamp;
         logic [2:0] lane_id;
+        logic [31:0] size;
     } score_t;
     
 endpackage

@@ -33,16 +33,16 @@ module Canonicalization #(
         input logic rst_n,
         input quote_t in_quote, // Upstream
         // Downstream
-        output quote_t ask_out_quote,
-        output quote_t bid_out_quote,
+//        output quote_t ask_out_quote,
+//        output quote_t bid_out_quote,
         
         output quote_t ask_out_quote_c,
         output quote_t bid_out_quote_c
     );
 
     // Register
-    quote_t ask_reg_quote;
-    quote_t bid_reg_quote;
+//    quote_t ask_reg_quote;
+//    quote_t bid_reg_quote;
     
     quote_t ask_reg_quote_c;
     quote_t bid_reg_quote_c;
@@ -50,14 +50,14 @@ module Canonicalization #(
     // Normalization
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            bid_reg_quote <= '0;
-            ask_reg_quote <= '0;
+//            bid_reg_quote <= '0;
+//            ask_reg_quote <= '0;
             bid_reg_quote_c <= '0;
             ask_reg_quote_c <= '0;
         end else begin
             // Always forward original quote
-            bid_reg_quote <= in_quote;
-            ask_reg_quote <= in_quote;
+//            bid_reg_quote <= in_quote;
+//            ask_reg_quote <= in_quote;
                 
             // Bid canonical
             bid_reg_quote_c.valid <= in_quote.valid && (in_quote.side == BID);
@@ -79,8 +79,8 @@ module Canonicalization #(
 
 
     // Output
-    assign bid_out_quote = bid_reg_quote;
-    assign ask_out_quote = ask_reg_quote;
+//    assign bid_out_quote = bid_reg_quote;
+//    assign ask_out_quote = ask_reg_quote;
     
     assign bid_out_quote_c = bid_reg_quote_c;
     assign ask_out_quote_c = ask_reg_quote_c;
