@@ -36,17 +36,15 @@ Each branch in this repository represents a version of the design:
   - TOB_Engine_V0 → Unpipelined baseline (85 MHz)
 
 Folders:
-   - RTL/ → RTL source files
-   - SIM/ → Testbench and simulation files
+   - reports/ → Important performance reports
+   - rtl/ → RTL source files
+   - sim/ → Testbench and simulation files
 ---
 
 ## Build & Simulation
 - Target device: Xilinx Artix-7
 - Toolchain: Vivado 2025.2
 - Language: SystemVerilog
-
----
-
 ## Future directions
 This design targets a maximum frequency of 250 MHz. Further improvements will focus on:
 - Balanced comparator tree restructuring
