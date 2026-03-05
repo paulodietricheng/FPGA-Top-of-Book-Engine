@@ -22,7 +22,7 @@ The timing report (timing_report_summary_100MHz (`TOB_Engine_V0 branch`) indicat
 ### Optimization 
 As the deep combinational path in the arbiter was the primary bottleneck, pipelining was introduced to reduce logic depth per stage. Registers were inserted between each level of the tournament tree.
 
-This increased total latency from 8 to 10 cycles, but reduced the combinational depth per stage for 15 levels (13 CARRY4, 2 LUTs), and a high fanout of 64.
+This increased total latency from 8 to 10 cycles, but reduced the combinational depth per stage for 3 levels (1 CARRY4, 2 LUTs)
 
 The optimized design achieves:
    - Fmax: 181.8 MHz (~113% improvement)
