@@ -100,7 +100,7 @@ module Arbiter_PIP #(
             reg_w_quote.valid <= s[STAGES][0].valid;
             reg_w_quote.side <= SIDE;
             reg_w_quote.price <= SIDE ? s[STAGES][0].price : ~s[STAGES][0].price;
-            reg_w_quote.timestamp <= s[STAGES][0].timestamp;
+            reg_w_quote.timestamp <= ~s[STAGES][0].timestamp;
             reg_w_quote.size <= s[STAGES][0].size;
             reg_w_quote.lane_id <= s[STAGES][0].lane_id;
         end
