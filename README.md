@@ -17,12 +17,12 @@ The processing pipeline consists of seven stages:
 ## Critical path analysis (TOB_Engine_V0)
 The first version provided a latency of 8 cycles at a maximum frequency (Fmax) of 85 MHz, corresponding to 94 ns. The design was synthesized targeting an Artix-7 device.
 
-The critical path was the unpipelined arbiter tree, consisting of three levels of combinational comparators. The accumulated combinational depth across the full reduction path limited achievable frequency.
+The critical path was the unpipelined arbiter tree, consisting of 33 logic levels (27 CARRY4, 5 LUTs and one 2-1 MUX), and a high fanout of 239. The accumulated combinational depth across the full reduction path limited achievable frequency.
 
 ### Optimization 
 As the deep combinational path in the arbiter was the primary bottleneck, pipelining was introduced to reduce logic depth per stage. Registers were inserted between each level of the tournament tree.
 
-This increased total latency from 8 to 10 cycles, but reduced the combinational depth per stage to a single comparison layer.
+This increased total latency from 8 to 10 cycles, but reduced the combinational depth per stage for 15 levels (13 CARRY4, 2 LUTs), and a high fanout of 64.
 
 The optimized design achieves:
    - Fmax: 182 MHz (114% improvement)
