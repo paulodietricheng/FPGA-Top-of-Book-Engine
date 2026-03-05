@@ -33,9 +33,7 @@ module Arbiter#(
 
     localparam STAGES = $clog2(N);
 
-    // -----------------------------
     // Input Registers (Stage 0)
-    // -----------------------------
     quote_t q_reg [N-1:0];
     score_t s_reg [N-1:0];
 
@@ -51,9 +49,7 @@ module Arbiter#(
         end
     end
 
-    // -----------------------------
-    // Pure Combinational Tree
-    // -----------------------------
+    // Tree stages
     quote_t q [0:STAGES][0:N-1];
     score_t s [0:STAGES][0:N-1];
 
@@ -80,9 +76,7 @@ module Arbiter#(
         end
     endgenerate
 
-    // -----------------------------
     // Final Output Register
-    // -----------------------------
     quote_t winner_reg;
 
     always_ff @(posedge clk or negedge rst_n) begin
