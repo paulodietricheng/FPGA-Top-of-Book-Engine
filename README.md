@@ -48,6 +48,18 @@ The optimized design achieves:
   - Fmax: 220.7 MHz (~21.4% improvement)
   - Latency: 10 cycles @ 220.7 MHz = 45 ns (18% improvement in absolute latency)
 
+## Critical path analysis (TOB_Engine_V2)
+
+This provided a latency of 10 cycles @ 220.7MHz. The design was synthesized on an Artix-7 device. 
+
+The timing report (`TOB_Engine_V2 branch`) indicated that the critical path was the `filter` stage. This stage would set quotes to `'0` in the case of having a smaller timestamp than already registered. However, setting the entire quote to `'0` required MUXes to each section of the vector, increasing the combinational delay. 
+
+### Optimization
+Thus, the stage was edited to set only the `valid` bit to `0`, which reduced the combinational delay, allowing for a higher maximum frequency at the same number of cycles.
+
+The optimized design achieves:
+  - Fmax: 223.4 MHz (~1.2% improvement)
+  - Latency: 10 cycles @ 223.4 MHz = 44.76 ns (0.53% improvement in absolute latency)
 
 ---
 
