@@ -2,7 +2,7 @@
 *Sub-50ns deterministic Top-of-Book arbitration engine implemented as a fully streaming FPGA pipeline.*
 
 ## Current Model timing characteristics:
-8 cycles @ 220MHz = 45 ns latency. 
+10 cycles @ 223.4MHz = 44.76 ns latency. 
 
 ## Summary
 A Top of Book engine is responsible for continuously tracking the best bids and best asks present in the market in real time. This design is a fully streaming pipeline, which takes N (assuming N to be a power of 2) quotes in parallel and outputs the best bid and best ask received. The result is the highest priced bid and lowest priced ask, while calculating spread and midpoint, and detecting crossed markets.
