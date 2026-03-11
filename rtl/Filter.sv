@@ -30,7 +30,7 @@ module Filter(
             last_timestamp <= in_quote.timestamp;
             reg_quote <= in_quote;
         end else
-            reg_quote <= '0;
+            reg_quote.valid <= 1'b0;
     end
     
     assign out_quote = reg_quote;
